@@ -2,9 +2,10 @@
   "name": "dev_dashboard_2019",
   "version": "1.0.1",
   "description": "Dashboard is an Epitech project.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./build/index.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,17 @@
   "author": "Alexandre GOSSELIN & Arthur RINGLER",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.7.7",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }
