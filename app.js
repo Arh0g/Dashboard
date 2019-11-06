@@ -6,9 +6,6 @@ const session = require('express-session')
 const app = express();
 const passport = require('passport')
 
-//Passport config
-require('./config/passport')(passport)
-
 //DB
 const db = require('./config/keys').MongoURI;
 mongoose.set('useCreateIndex', true)
