@@ -1,1 +1,82 @@
-<h1>Hello <%= user.name %> !</h1>
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; margin: 0;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.jQueryUI.min.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/9315135da5.js"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid col-md-12" style="display: flex; flex-flow: column; background-color: grey; height: 100%;">
+        <div class="grid-stack">
+            <div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px;" 
+            data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="3">
+                <div class="grid-stack-item-content" style="justify-content: center; align-items: center; display: flex;">
+                    <button class="btn" id="addNewWidget">
+                        <p style="font-size: 60px; color: grey;">+</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+            
+        <script type="text/javascript">
+            $(function () {
+                var options = {
+                    cellHeight: 80,
+                    verticalMargin: 10,
+                    removable: true
+                };
+                $('.grid-stack').gridstack(options);
+
+                this.grid = $('.grid-stack').data('gridstack');
+                    this.addNewWidget = function() {
+                        var node = {
+                            x: 4,
+                            y: 4,
+                            autoPosition: true,
+                            width: 3,
+                            height: 3
+                        };
+                        this.grid.addWidget($('<div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px"><div class="grid-stack-item-content"><button class="btn btn-danger" id="deleteWidget" style="border-radius: 30px; margin-top: 5px; padding: 5px; margin-left: 2px;"></button><div style="justify-content: center; align-items: center; display: flex; margin-top: 30px"><button class="btn">Add Widget</button></div></div></div>'), 
+                            node.x, node.y, node.width, node.height)
+                        console.log(this.grid.grid.nodes)
+                        return false
+                    }.bind(this)
+                $('#addNewWidget').click(this.addNewWidget)
+                //Delete Widget, a little bit different
+                $('body').on('click','#deleteWidget',function(e) {
+                    e.preventDefault();
+                    var grid = $('.grid-stack').data('gridstack'),
+                        el = $(this).closest('.grid-stack-item')
+                    if (confirm("Are you sure you wish to delete this widget?") == true) { 
+                        grid.remove_widget(el);
+                    }
+                });
+            });
+
+        </script>
+    </div>
+</body>
+</html>
