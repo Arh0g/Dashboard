@@ -8,12 +8,14 @@ const UserSchema = new mongoose.Schema({
         date: {
             type: Date,
             default: Date.now
-        }
+        },
+        widgets: { type: Array, required: false}
     },
     facebook : {
         id : String,
         token : String,
-        name : String
+        name : String,
+        widgets: { type: Array, required: false}
     }
 });
 

@@ -23,7 +23,6 @@ module.exports = function(passport) {
                     //Find if password is good
                     bcrypt.compare(password, user.local.password, (err, isMatch) => {
                         if (err) throw err
-
                         if (isMatch) {
                             return done(null, user)
                         } else {

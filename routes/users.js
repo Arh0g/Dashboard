@@ -15,8 +15,6 @@ const fetch = require('node-fetch')
 //Link password config to the global variable
 require('../config/passport')(passport)
 
-console.log(passport)
-
 router.use(bodyParser.json())
 
 //User model for database
