@@ -114,7 +114,7 @@
                                 el = $(this).closest('.grid-stack-item')
                             console.log(el)
                             if (confirm('Do you want to remove this widget ?') == true)
-                                grid.remove_widget(el);
+                                grid.removeWidget(el);
                         });
                     </script>
                 </div>
@@ -179,9 +179,9 @@
                                     width: 4,
                                     height: 2
                                 }
-                                console.log(temp)
+                                var elementId = 'id="' + cityWeather + '"'
                                 var button = '<button id="removeWidget" style="position: absolute; top: 5px; right: 5px; border: 1px solid red; background-color: red; border-radius: 20px; padding: 5px"></button>'
-                                var createElement = '<div class="grid-stack-item" style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
+                                var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
                                 this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
                                 })
                             .catch(function() {
@@ -228,10 +228,12 @@
                                 x: 3,
                                 y: 3,
                                 width: 3,
-                                height: 3
+                                height: 3,
                             }
-                            var createElement = '<div class="grid-stack-item" style="background-color: red; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px">' + iframe + '</div></div>'
-                            this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                            var elementId = 'id="' + videoId + '"'
+                            var button = '<button id="removeWidget" style="position: absolute; top: 5px; right: 5px; border: 1px solid red; background-color: orange; border-radius: 20px; padding: 5px"></button>'
+                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px">' + button + iframe + '</div></div>'
+                            this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
                         }
                     </script>
                 </div>
