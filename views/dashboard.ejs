@@ -81,13 +81,13 @@
                         </div>
                     </div>
                     <script>
+                        //Load Widgets
                         function loadAllWidgets() {
                             var xhr = new XMLHttpRequest()
                             xhr.open("GET", "/loadWidget", true)
                             xhr.onreadystatechange = function() {
                                 if (xhr.readyState == 4 && xhr.status == 200) {
                                     var widgets = JSON.parse(xhr.responseText)
-                                    console.log(widgets)
                                     for (var i = 0; i < widgets.length; i++) {
                                         //Youtube Widget Creattion
                                         if (widgets[i].widgetName == "youtube") {
@@ -95,19 +95,27 @@
                                                 createYoutubeWidget(widgets[i].widgetContent)
                                             }
                                         } else if (widgets[i].widgetName == "weather") {
-                                            console.log("aaaa")
                                             if (widgets[i].widgetRole == "getWeatherByCity") {
-                                                console.log("bbbb")
                                                 createWeatherWidget(widgets[i].widgetContent)
                                             }
                                         }
-                                        //Other
                                     }
                                 }
                             }
                             xhr.send()
                         }
                         loadAllWidgets()
+                    </script>
+                    <script>
+                        //Remove Widget
+                         $('body').on('click', '#removeWidget', function (e) {
+                            e.preventDefault();
+                            var grid = $('.grid-stack').data('gridstack'),
+                                el = $(this).closest('.grid-stack-item')
+                            console.log(el)
+                            if (confirm('Do you want to remove this widget ?') == true)
+                                grid.remove_widget(el);
+                        });
                     </script>
                 </div>
 
@@ -133,7 +141,7 @@
                         <input type="text" placeholder="City" name="widgetContent" id="cityWeather">
                         <input type="hidden" name="widgetName" value="weather">
                         <input type="hidden" name="widgetRole" value="getWeatherByCity">
-                        <input type="submit" value="Create">
+                        <input type="submit" id="submit" value="Create">
                     </form>
                     <!--Close Window Function-->
                     <script type="text/javascript">
@@ -172,11 +180,13 @@
                                     height: 2
                                 }
                                 console.log(temp)
-                                var createElement = '<div class="grid-stack-item" style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + first + second + '</div></div>'
+                                var button = '<button id="removeWidget" style="position: absolute; top: 5px; right: 5px; border: 1px solid red; background-color: red; border-radius: 20px; padding: 5px"></button>'
+                                var createElement = '<div class="grid-stack-item" style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
                                 this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
                                 })
                             .catch(function() {
-                                //Errors
+                                alert('Wrong city name !')
+                                return false
                             })
                         }
                     </script>

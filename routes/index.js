@@ -55,7 +55,7 @@ router.post('/saveWidget', (req, res) => {
     }
     realUser.widgets.push(dataWidget)
     user.save()
-    res.sendStatus(200)
+    res.sendStatus(204)
 })
 
 router.get('/loadWidget', (req, res) => {
