@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.min.js"></script>
@@ -15,130 +14,220 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/9315135da5.js"></script>
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Dashboard</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/dashboard">Dashboard</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/profile">Profile <span class="sr-only">(current)</span></a>
+    <div class="wrapper">
+
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3 id="dashboardToggle">Dashboard</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/dashboard">Home</a>
+                </li>
+                <li>
+                    <a href="/profile">Profile</a>
                 </li>
             </ul>
-        </div>
-    </nav>
-
-    <!-- Window to choose widget -->
-    <div id="chooseWidgetWindow" class="container-fluid" style="border: 2px solid; border-color: darkgray; position: absolute; width: 400px; height: 400px; display: none; top: 20%; left: 35%; z-index: 1; border-radius: 10px; opacity: 0.95; background-color: lightgrey;">
-        <button id="closeWidgetWindow" style="border-radius: 30px; background-color: red; padding: 5px;"></button>
-        <h1 style="text-align: center;">Choose Widget</h1>
-        </br>
-        <div class="container" style="text-align: left;">
-            <div style="display: inline-block;">
-                <form action="/dashboard" method="POST">
-                    <input type="text" name="cityWeather" placeholder="City Name" id="cityWeather" required>
-                    <input type="submit" value="Get Weather" id="weatherWidgetButton">
-                </form>
-            </div>
-
-            <br/>
-
-            <div style="display: inline-block;">
-                <form action="/dashboard" method="POST">
-                    <input type="text" name="videoID" id="videoID" placeholder="Youtube ID" required>
-                    <input type="submit" value="Get Youtube">
-                </form>
-            </div>
-
-            <br/>
-
-            <div style="display: inline-block;">
-                <form action="/dashboard" method="POST">
-                    <input type="text" name="steamID" id="steamID" placeholder="Steam ID" required>
-                    <input type="submit" value="Get Steam">
-                </form>
-            </div>
-
-            <br/>
-
-        </div>
-    </div>
-    <script type="text/javascript">
-        $(function () {
-            $('body').on('click', '#closeWidgetWindow', function() {
-                $('#mainWindow').fadeTo("slow", 1)
-                $('#chooseWidgetWindow').hide();
-            })
-        })
-    </script>
+            <ul class="list-unstyled components">
+                <!--Weather-->
+                <li>
+                    <a href="#" id="weatherButton" >Get Weather</a>
+                </li>
+                <!--Youtube-->
+                <li>
+                    <a href="#" id="youtubeButton">Get Youtube</a>
+                </li>
+                <!--Steam-->
+                <li>
+                    <a href="#" id="steamButton">Get Steam</a>
+                </li>
+            </ul>
+        </nav>
     
-    <!-- Div widget-->
-    <div id="mainWindow" class="container-fluid col-md-12" style="display: flex; flex-flow: column; background-color: grey; height: 100%;">
-        <div class="grid-stack">
-            <!-- Basic grid -->
-            <div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px;" 
-            data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="3">
-                <div class="grid-stack-item-content" style="justify-content: center; align-items: center; display: flex;">
-                    <button class="btn" id="addNewWidget">
-                        <p style="font-size: 60px; color: grey;">+</p>
-                    </button>
+        <!-- Page Content -->
+        <div id="mainContent">
+            <div class="container-fluid">
+                <!--JS Script to Toggle the Button-->
+                <button type="button" id="sidebarCollapse" class="btn btn-info" style="display: none;">
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <script>
+                    $(document).ready(function () {
+                        $('#dashboardToggle').on('click', function () {
+                            $('#sidebar').toggleClass('active');
+                            $('#sidebarCollapse').show();
+                        });
+                        $('#sidebarCollapse').on('click', function() {
+                            $('#sidebar').toggleClass('active')
+                            $('#sidebarCollapse').hide()
+                        })
+                    });
+                </script>
+                <!-- Real Content -->
+                <div class="grid-stack">
+                    <!-- Basic grid -->
+                    <div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px;" 
+                    data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="3">
+                        <div class="grid-stack-item-content" style="justify-content: center; align-items: center; display: flex;">
+                            <h1 style="text-align: center">Template Widget</h1>
+                        </div>
+                    </div>
+                    <script>
+                        function loadAllWidgets() {
+                            var xhr = new XMLHttpRequest()
+                            xhr.open("GET", "/loadWidget", true)
+                            xhr.onreadystatechange = function() {
+                                if (xhr.readyState == 4 && xhr.status == 200) {
+                                    var widgets = JSON.parse(xhr.responseText)
+                                    console.log(widgets)
+                                    for (var i = 0; i < widgets.length; i++) {
+                                        //Youtube Widget Creattion
+                                        if (widgets[i].widgetName == "youtube") {
+                                            if (widgets[i].widgetRole == "loadVideo") {
+                                                createYoutubeWidget(widgets[i].widgetContent)
+                                            }
+                                        } else if (widgets[i].widgetName == "weather") {
+                                            console.log("aaaa")
+                                            if (widgets[i].widgetRole == "getWeatherByCity") {
+                                                console.log("bbbb")
+                                                createWeatherWidget(widgets[i].widgetContent)
+                                            }
+                                        }
+                                        //Other
+                                    }
+                                }
+                            }
+                            xhr.send()
+                        }
+                        loadAllWidgets()
+                    </script>
+                </div>
+
+                <script type="text/javascript">
+                    $(function () {
+                        var options = {
+                            cellHeight: 80,
+                            verticalMargin: 10
+                        };
+                        $('.grid-stack').gridstack(options);
+                    });
+                </script>
                 </div>
             </div>
 
-            <!-- Dynamic grid -->
-            <%for (var i = 0; i != widgets.length; i++) {%>
-                <div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px;" 
-                data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="3">
-                <div class="grid-stack-item-content" style="justify-content: center; align-items: center; display: flex;">
-                    <p style="font-size: 60"><%=widgets[i].name%></p>
-                    </br>
-                    <p><%=widgets[i].value%>°</p>
+            <!--Weather Division-->
+            <div class="hiddenClass">
+                <div class="weatherClass" id="weatherClass">
+                    <h1>Weather Widget</h1>
+                    <button id="removeWindowWeatherButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="cityWeather">Name of your city -> </label>
+                        <input type="text" placeholder="City" name="widgetContent" id="cityWeather">
+                        <input type="hidden" name="widgetName" value="weather">
+                        <input type="hidden" name="widgetRole" value="getWeatherByCity">
+                        <input type="submit" value="Create">
+                    </form>
+                    <!--Close Window Function-->
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#weatherButton').on('click', function() {
+                                $('#weatherClass').show()
+                                $('#mainContent').fadeTo("slow", 0.4)
+                            })
+                            $('#removeWindowWeatherButton').on('click', function() {
+                                $('#weatherClass').hide()
+                                $('#mainContent').fadeTo("slow", 1)
+                            })
+                        })
+                    </script>
+                    <!--Weather Widget Creation-->
+                    <script type="text/javascript">
+                        function createWeatherWidget(cityWeather) {
+                            /*Get Data*/
+                            var key = '48eb9b6228b51e3445b97cb1640729a1'
+                            var city = cityWeather
+                            fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key)
+                            .then(function(resp) {
+                                return resp.json()
+                            })
+                            .then(function(data) {
+                                var temp =  Math.round(parseFloat(data.main.temp)-273.15);
+                                var desc = data.weather[0].description
+                                var first = '<h1>' + '<strong>' + city + '</strong>' + '</h1>'
+                                var second = '<h2>' + temp + ' °, ' + desc +'</h2>'
+                                /*Create Widget*/
+                                this.grid = $('.grid-stack').data('gridstack')
+                                var node = {
+                                    x: 3,
+                                    y: 3,
+                                    width: 4,
+                                    height: 2
+                                }
+                                console.log(temp)
+                                var createElement = '<div class="grid-stack-item" style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + first + second + '</div></div>'
+                                this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                                })
+                            .catch(function() {
+                                //Errors
+                            })
+                        }
+                    </script>
                 </div>
-            <%}%>
+            </div>
+            <!--Youtube Division-->
+            <div class="hiddenClass">
+                <div class="youtubeClass" id="youtubeClass">
+                    <h1>Youtube Widget</h1>
+                    <button id="removeWindowYoutubeButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="">Load video by id -> </label>
+                        <input type="hidden" name="widgetName" value="youtube">
+                        <input type="hidden" name="widgetRole" value="loadVideo">
+                        <input type="text" placeholder="Ex : PeLBnv-PUck" name="widgetContent" id="videoId">
+                        <input type="submit" value="Create">
+                    </form>
+                    <!--Close Window Function-->
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#youtubeButton').on('click', function() {
+                                $('#youtubeClass').show()
+                                $('#mainContent').fadeTo("slow", 0.4)
+                            })
+                            $('#removeWindowYoutubeButton').on('click', function() {
+                                $('#youtubeClass').hide()
+                                $('#mainContent').fadeTo("slow", 1)
+                            })
+                        })
+                    </script>
+                    <!--Weather Widget Creation-->
+                    <script type="text/javascript">
+                        function createYoutubeWidget(videoId) {
+                            /*Get Data*/
+                            var iframe = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '"></iframe>'
+                            /*Create Widget*/
+                            this.grid = $('.grid-stack').data('gridstack')
+                            var node = {
+                                x: 3,
+                                y: 3,
+                                width: 3,
+                                height: 3
+                            }
+                            var createElement = '<div class="grid-stack-item" style="background-color: red; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px">' + iframe + '</div></div>'
+                            this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                        }
+                    </script>
+                </div>
+            </div>
+            <!--Steam Division-->
         </div>
-            
-        <script type="text/javascript">
-            $(function () {
-                var options = {
-                    cellHeight: 80,
-                    verticalMargin: 10,
-                    removable: true
-                };
-                $('.grid-stack').gridstack(options);
-
-                this.grid = $('.grid-stack').data('gridstack');
-                    //Add a widget
-                    this.addNewWidget = function() {
-                        var createDivString = '<div class="grid-stack-item" style="border: 1px solid black; background-color: darkgrey; margin: 10px; border-radius: 10px"><div class="grid-stack-item-content"><button class="btn btn-danger" id="deleteWidget" style="border-radius: 30px; margin-top: 5px; padding: 5px; margin-left: 2px;"></button><div style="justify-content: center; align-items: center; display: flex; margin-top: 30px"></div></div></div>'
-                        var node = {
-                            x: 4,
-                            y: 4,
-                            autoPosition: true,
-                            width: 3,
-                            height: 3
-                        };
-                        this.grid.addWidget($(createDivString), 
-                            node.x, node.y, node.width, node.height)
-                        console.log(this.grid.grid.nodes)
-                        return false
-                    }.bind(this)
-
-                $('#addNewWidget').click(function() {
-                    $('#mainWindow').fadeTo("slow", 0.5)
-                    $('#chooseWidgetWindow').show();
-                })
-                $('#submitWidget').click(this.addNewWidget)
-                $('body').on('click','#deleteWidget',function(e) {
-                    e.preventDefault();
-                    var grid = $('.grid-stack').data('gridstack'),
-                        el = $(this).closest('.grid-stack-item')
-                    if (confirm("Are you sure you wish to delete this widget?") == true) { 
-                        grid.removeWidget(el);
-                    }
-                });
-            });
-        </script>
     </div>
 </body>
 </html>

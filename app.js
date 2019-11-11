@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 //ROUTES
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+app.use(express.static(__dirname + '/public'));
 
 app.listen(8080, () => {
   console.log('Dashboard listening on port 8080!');
