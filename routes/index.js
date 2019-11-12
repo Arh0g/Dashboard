@@ -55,12 +55,60 @@ router.post('/saveWidget', (req, res) => {
     }
     realUser.widgets.push(dataWidget)
     user.save()
-    res.sendStatus(204)
+    res.status(200).send('Widget added !')
+})
+
+router.post('/editWidget', (req, res) => {
+    var widgetToChange = req.body.toChange
+    var widgetNewValue = req.body.newValue
+    console.log('To change -> ' + widgetToChange)
+    console.log('New -> ' + widgetNewValue)
+    var user = req.user
+    var realUser
+    if (user.local) {
+        realUser = user.local
+    } else if (user.facebook) {
+        realUser = user.facebook
+    }
+    var widgets = realUser.widgets
+    for (var i = 0; i < widgets.length; i++) {
+        if (widgets[i].widgetContent == widgetToChange) {
+            var newData = {
+                widgetContent: widgetNewValue,
+                widgetName: widgets[i].widgetName,
+                widgetRole: widgets[i].widgetRole
+            }
+            widgets.splice(i, 1)
+            realUser.widgets.push(newData)
+            user.save()
+            break;
+        }
+    }
+    res.status(200).send('Widget updated !')
 })
 
 router.get('/loadWidget', (req, res) => {
     var widgets = req.user.local.widgets
     res.send(JSON.stringify(widgets))
+})
+
+router.post('/deleteWidget', (req, res) => {
+    var widgetToRemove = req.body.toRemove
+    var user = req.user
+    var realUser
+    if (req.user.local)
+        realUser = req.user.local
+    else if (req.user.facebook)
+        realUser = req.user.facebook
+    var widgets = realUser.widgets
+    for (var i = 0; i < widgets.length; i++) {
+        if (widgets[i].widgetContent == widgetToRemove) {
+            widgets.splice(i, 1)
+            user.save()
+            break;
+        }
+    }
+    res.status(200).send("Widget removed !")
 })
 
 router.get('/profile', ensureAuthenticated, (req, res) => {

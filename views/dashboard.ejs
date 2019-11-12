@@ -50,6 +50,11 @@
                     <a href="#" id="steamButton">Get Steam</a>
                 </li>
             </ul>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#"><span class="fas fa-sign-out-alt"></span> Logout</a>
+                </li>
+            </ul>
         </nav>
     
         <!-- Page Content -->
@@ -106,17 +111,6 @@
                         }
                         loadAllWidgets()
                     </script>
-                    <script>
-                        //Remove Widget
-                         $('body').on('click', '#removeWidget', function (e) {
-                            e.preventDefault();
-                            var grid = $('.grid-stack').data('gridstack'),
-                                el = $(this).closest('.grid-stack-item')
-                            console.log(el)
-                            if (confirm('Do you want to remove this widget ?') == true)
-                                grid.removeWidget(el);
-                        });
-                    </script>
                 </div>
 
                 <script type="text/javascript">
@@ -130,6 +124,35 @@
                 </script>
                 </div>
             </div>
+
+            <!-- Edit Division -->
+            <div class="editClass" id="editClass">
+                <button id="closeEditWindow">x</button>
+                <form action="/editWidget" method="POST">
+                    <h2><strong>Change your value</strong></h2>
+                    </br>
+                    <input type="hidden" name="toChange" id="toChange" value="">
+                    <input type="text" name="newValue" placeholder="Change value">
+                    </br>
+                    <input type="submit">
+                </form>
+            </div>
+            <script>
+                //Launch Edit Window
+                function editWidget(item) {
+                    $('#editClass').show()
+                    $('#mainContent').fadeTo("slow", 0.4)
+                    var toChangeInput = document.getElementById('toChange')
+                    toChangeInput.value = item
+                }
+                //Close Edit Window
+                $(document).ready(function() {
+                    $('#closeEditWindow').on('click', function() {
+                        $('#editClass').hide()
+                        $('#mainContent').fadeTo("slow", 1)
+                    })
+                })
+            </script>
 
             <!--Weather Division-->
             <div class="hiddenClass">
@@ -180,8 +203,9 @@
                                     height: 2
                                 }
                                 var elementId = 'id="' + cityWeather + '"'
-                                var button = '<button id="removeWidget" style="position: absolute; top: 5px; right: 5px; border: 1px solid red; background-color: red; border-radius: 20px; padding: 5px"></button>'
-                                var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
+                                var valueID = 'value="' + cityWeather + '"'
+                                var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button class="trashButton" type="submit"></button></form>'
+                                var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
                                 this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
                                 })
                             .catch(function() {
@@ -231,8 +255,9 @@
                                 height: 3,
                             }
                             var elementId = 'id="' + videoId + '"'
-                            var button = '<button id="removeWidget" style="position: absolute; top: 5px; right: 5px; border: 1px solid red; background-color: orange; border-radius: 20px; padding: 5px"></button>'
-                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;" ><div class="grid-stack-item-content" style="padding: 20px">' + button + iframe + '</div></div>'
+                            var valueID = 'value="' + videoId + '"'
+                            var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
+                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;" ><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px">' + button + iframe + '</div></div>'
                             this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
                         }
                     </script>
