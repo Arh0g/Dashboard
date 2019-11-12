@@ -13,10 +13,7 @@
     <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.jQueryUI.min.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://use.fontawesome.com/9315135da5.js"></script>
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7823975bd6.js" crossorigin="anonymous"></script>   
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Dashboard</title>
 </head>
@@ -39,15 +36,15 @@
             <ul class="list-unstyled components">
                 <!--Weather-->
                 <li>
-                    <a href="#" id="weatherButton" >Get Weather</a>
+                    <a href="#" id="weatherButton" ><i class="fas fa-cloud-sun"></i> Get Weather</a>
                 </li>
                 <!--Youtube-->
                 <li>
-                    <a href="#" id="youtubeButton">Get Youtube</a>
+                    <a href="#" id="youtubeButton"><i class="fab fa-youtube"></i> Get Youtube</a>
                 </li>
                 <!--Steam-->
                 <li>
-                    <a href="#" id="steamButton">Get Steam</a>
+                    <a href="#" id="steamButton"><i class="fab fa-steam"></i> Get Steam</a>
                 </li>
             </ul>
             <ul class="list-unstyled components">
@@ -78,13 +75,6 @@
                 </script>
                 <!-- Real Content -->
                 <div class="grid-stack">
-                    <!-- Basic grid -->
-                    <div class="grid-stack-item" style="background-color: darkgrey; margin: 10px; border-radius: 10px;" 
-                    data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="3">
-                        <div class="grid-stack-item-content" style="justify-content: center; align-items: center; display: flex;">
-                            <h1 style="text-align: center">Template Widget</h1>
-                        </div>
-                    </div>
                     <script>
                         //Load Widgets
                         function loadAllWidgets() {
@@ -191,10 +181,11 @@
                                 return resp.json()
                             })
                             .then(function(data) {
+                                var country = data.sys.country
                                 var temp =  Math.round(parseFloat(data.main.temp)-273.15);
                                 var desc = data.weather[0].description
-                                var first = '<h1>' + '<strong>' + city + '</strong>' + '</h1>'
-                                var second = '<h2>' + temp + ' °, ' + desc +'</h2>'
+                                var first = '<h1>' + '<strong>' + city + ', ' + country + '</strong>' + '</h1>'
+                                var second = '<h2><i class="fas fa-thermometer-half"></i> ' + temp + ' °, ' + desc +'</h2>'
                                 /*Create Widget*/
                                 this.grid = $('.grid-stack').data('gridstack')
                                 var node = {
@@ -254,19 +245,20 @@
                     <script type="text/javascript">
                         function createYoutubeWidget(videoId) {
                             /*Get Data*/
-                            var iframe = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '"></iframe>'
+                            var first = '<h1><strong>' + videoId + '</strong></h1>'
+                            var iframe = '<iframe style="margin-bottom: 10px; border: 1px solid red; border-radius: 5px" width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '"></iframe>'
                             /*Create Widget*/
                             this.grid = $('.grid-stack').data('gridstack')
                             var node = {
                                 x: 3,
                                 y: 3,
-                                width: 3,
-                                height: 3,
+                                width: 5,
+                                height: 4,
                             }
                             var elementId = 'id="' + videoId + '"'
                             var valueID = 'value="' + videoId + '"'
                             var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;" ><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px">' + button + iframe + '</div></div>'
+                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;" ><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + iframe + '</div></div>'
                             this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
                         }
                         //Get Video Views
@@ -281,7 +273,7 @@
                                 /*Get Data*/
                                 var statistics = data.items[0].statistics
                                 var first = '<h1><strong>' + videoId + '</strong></h1>'
-                                var second = '<h2>' + statistics.viewCount + '</h2>'
+                                var second = '<h2><i class="fas fa-eye"></i> ' + statistics.viewCount + '</h2>'
                                 /*Create Widget*/
                                 this.grid = $('.grid-stack').data('gridstack')
                                 var node = {

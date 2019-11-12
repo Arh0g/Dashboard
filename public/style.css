@@ -1,0 +1,262 @@
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+
+/*
+    ADDITIONAL DEMO STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
+*/
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: lightgrey;
+}
+
+h1 {
+    font-family: 'Poppins';
+}
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+#mainContent {
+    width: 100%;
+    height: 100%;
+}
+
+/*For Weather*/
+
+.weatherClass {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 300px;
+    top: 50px;
+    border-radius: 10px;
+    background-color: powderblue;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+    z-index: 1;
+}
+
+.weatherClass h1 {
+    color: white;
+}
+
+.weatherClass button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+.weatherClass form {
+    margin-top: 60px;
+}
+
+.weatherClass input[type="text"] {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.weatherClass input[type="submit"] {
+    padding: 10px;
+    border: 1px solid white;
+    color: powderblue;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+/*For Youtube*/
+
+.youtubeClass {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 300px;
+    top: 50px;
+    background-color: red;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+}
+
+.youtubeClass h1 {
+    color: white;
+}
+
+.youtubeClass button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    border: none;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+.youtubeClass form {
+    margin-top: 60px;
+}
+
+.youtubeClass input[type="text"] {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.youtubeClass input[type="submit"] {
+    padding: 10px;
+    border: 1px solid white;
+    color: red;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+/*Edit*/
+
+.editClass {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    background-color: grey;
+    position: absolute;
+    right: 100px;
+    top: 50px;
+    width: 250px;
+    height: 250px;
+    display: none;
+}
+
+.editClass button {
+    background-color: grey;
+    color: red;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    border: 1px solid grey;
+}
+
+.editClass input[type="text"] {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.editClass input[type="submit"] {
+    margin-top: 15px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+.editButton {
+    position: absolute;
+    padding: 7px;
+    background-color: greenyellow;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    top: 2px;
+    left: 2px;
+}
+
+.trashButton {
+    position: absolute;
+    padding: 7px;
+    background-color: orange;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    top: 2px;
+    left: 14px;
+}

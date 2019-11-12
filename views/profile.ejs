@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.jQueryUI.min.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/7823975bd6.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="wrapper">
+            <!-- Sidebar -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h3 id="dashboardToggle">Dashboard</h3>
+                </div>
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="/dashboard">Home</a>
+                    </li>
+                    <li>
+                        <a href="/profile">Profile</a>
+                    </li>
+                </ul>
+                <ul class="list-unstyled components">
+                    <!--Weather-->
+                    <li>
+                        <a href="#" id="weatherButton" ><i class="fas fa-cloud-sun"></i> Get Weather</a>
+                    </li>
+                    <!--Youtube-->
+                    <li>
+                        <a href="#" id="youtubeButton"><i class="fab fa-youtube"></i> Get Youtube</a>
+                    </li>
+                    <!--Steam-->
+                    <li>
+                        <a href="#" id="steamButton"><i class="fab fa-steam"></i> Get Steam</a>
+                    </li>
+                </ul>
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="#"><span class="fas fa-sign-out-alt"></span> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        
+            <!-- Page Content -->
+            <div id="content">
+                <div class="container-fluid">
+                    <!--JS Script to Toggle the Button-->
+                    <button type="button" id="sidebarCollapse" class="btn btn-info" style="display: none;">
+                        <i class="fas fa-align-left"></i>
+                    </button>
+                    <% if (user.name != '') { %>
+                        <h1>You are : <%= user.name %></h1>
+                    <% } %>
+                    <script>
+                        $(document).ready(function () {
+                            $('#dashboardToggle').on('click', function () {
+                                $('#sidebar').toggleClass('active');
+                                $('#sidebarCollapse').show();
+                            });
+                            $('#sidebarCollapse').on('click', function() {
+                                $('#sidebar').toggleClass('active')
+                                $('#sidebarCollapse').hide()
+                            })
+                        });
+                    </script>
+                </div>
+            </div>
+        </div> 
+</body>
+</html>
