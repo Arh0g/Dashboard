@@ -61,8 +61,6 @@ router.post('/saveWidget', (req, res) => {
 router.post('/editWidget', (req, res) => {
     var widgetToChange = req.body.toChange
     var widgetNewValue = req.body.newValue
-    console.log('To change -> ' + widgetToChange)
-    console.log('New -> ' + widgetNewValue)
     var user = req.user
     var realUser
     if (user.local) {
