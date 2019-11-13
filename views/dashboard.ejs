@@ -46,6 +46,10 @@
                 <li>
                     <a href="#" id="steamButton"><i class="fab fa-steam"></i> Get Steam</a>
                 </li>
+                <!--Cinema-->
+                <li>
+                    <a href="#" id="cinemaButton"><i class="fas fa-film"></i> Get Movie</a>
+                </li>
             </ul>
             <ul class="list-unstyled components">
                 <li>
@@ -374,7 +378,7 @@
                         var playerInformations = data.response.players[0]
                         console.log(playerInformations)
                         var first = '<img style="border: 1px solid black; border-radius: 80px" src="' + playerInformations.avatarfull + '">'
-                        var second = '<h2 style="color: white"><strong>' + playerInformations.personaname + '</strong></h2>'
+                        var second = '<h2 style="color: white; margin-top: 10px"><strong>' + playerInformations.personaname + '</strong></h2>'
                         var third = '<a target="_blank" style="color: white" href="' + playerInformations.profileurl + '">See Profile</a>'
                         console.log(first)
                         /*Create Widget*/
