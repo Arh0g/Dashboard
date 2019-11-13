@@ -204,6 +204,57 @@ ul ul a {
     margin-left: 10px;
 }
 
+/*Steam Class*/
+.steamClass {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 300px;
+    top: 50px;
+    background-color: black;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+}
+
+.steamClass h1 {
+    color: white;
+}
+
+.steamClass button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    border: none;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+.steamClass form {
+    margin-top: 60px;
+}
+
+.steamClass label {
+    color: white;
+}
+
+.steamClass input[type="text"] {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.steamClass input[type="submit"] {
+    padding: 10px;
+    border: 1px solid white;
+    color: black;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+
 /*Edit*/
 
 .editClass {

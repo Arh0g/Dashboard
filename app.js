@@ -4,6 +4,8 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const app = express();
 const passport = require('passport')
+const cors = require('cors')
+
 
 //DB
 const db = require('./config/keys').MongoURI;
@@ -39,6 +41,9 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error')
   next()
 })
+
+//To use steam api
+app.use(cors())
 
 //ROUTES
 app.use('/', require('./routes/index'));

@@ -98,6 +98,10 @@
                                             if (widgets[i].widgetRole == "getWeatherByCity") {
                                                 createWeatherWidget(widgets[i].widgetContent)
                                             }
+                                        } else if (widgets[i].widgetName == "steam") {
+                                            if (widgets[i].widgetRole == "getPlayerInformation") {
+                                                createSteamWidgetUserInformation(widgets[i].widgetContent)
+                                            }
                                         }
                                     }
                                 }
@@ -152,7 +156,7 @@
             <!--Weather Division-->
             <div class="hiddenClass">
                 <div class="weatherClass" id="weatherClass">
-                    <h1><strong>Weather Widget</strong></h1>
+                    <h1><strong><i class="fas fa-cloud-sun"></i> Weather Widget</strong></h1>
                     <button id="removeWindowWeatherButton">X</button>
                     <form action="/saveWidget" method="POST">
                         <label for="cityWeather">Name of your city -> </label>
@@ -214,7 +218,7 @@
             <!--Youtube Division-->
             <div class="hiddenClass">
                 <div class="youtubeClass" id="youtubeClass">
-                    <h1><strong>Youtube Widget</strong></h1>
+                    <h1><strong><i class="fab fa-youtube"></i> Youtube Widget</strong></h1>
                     <button id="removeWindowYoutubeButton">X</button>
                     <form action="/saveWidget" method="POST">
                         <label for="">Load video by id -> </label>
@@ -333,6 +337,62 @@
                 </div>
             </div>
             <!--Steam Division-->
+            <div class="hiddenClass">
+                <div class="steamClass" id="steamClass">
+                    <h1><strong><i class="fab fa-steam"></i> Steam Widget</strong></h1>
+                    <button id="removeWindowSteamButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="">Get player information by id -> </label>
+                        <input type="hidden" name="widgetName" value="steam">
+                        <input type="hidden" name="widgetRole" value="getPlayerInformation">
+                        <input type="text" placeholder="Ex : 76561198411894760" name="widgetContent" id="videoId" required>
+                        <input type="submit" value="Create">
+                    </form>
+                </div>
+            </div>
+            <!--Close Window Function-->
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#steamButton').on('click', function() {
+                        $('#steamClass').show()
+                        $('#mainContent').fadeTo("slow", 0.4)
+                    })
+                    $('#removeWindowSteamButton').on('click', function() {
+                        $('#steamClass').hide()
+                        $('#mainContent').fadeTo("slow", 1)
+                    })
+                })
+            </script>
+            <script type="text/javascript">
+                function createSteamWidgetUserInformation(playerId) {
+                    //76561198411894760
+                    var apiKey = "F1E6CC6FAACA332C636766584B04B57F"
+                    var url = "https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + apiKey + "&steamids=" + playerId
+                    fetch(url)
+                    .then(resp => resp.json())
+                    .then (data => {
+                        var playerInformations = data.response.players[0]
+                        console.log(playerInformations)
+                        var first = '<img style="border: 1px solid black; border-radius: 80px" src="' + playerInformations.avatarfull + '">'
+                        var second = '<h2 style="color: white"><strong>' + playerInformations.personaname + '</strong></h2>'
+                        var third = '<a target="_blank" style="color: white" href="' + playerInformations.profileurl + '">See Profile</a>'
+                        console.log(first)
+                        /*Create Widget*/
+                        this.grid = $('.grid-stack').data('gridstack')
+                        var node = {
+                            x: 3,
+                            y: 3,
+                            width: 4,
+                            height: 4,
+                        }
+                        var elementId = 'id="' + playerId + '"'
+                        var valueID = 'value="' + playerId + '"'
+                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
+                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: black; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-steam"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + third + '</div></div>'
+                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                    })
+                }
+            </script>
         </div>
     </div>
 </body>
