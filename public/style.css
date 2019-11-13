@@ -254,6 +254,57 @@ ul ul a {
     margin-left: 10px;
 }
 
+/*CinemaClass*/
+
+.cinemaClass {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 300px;
+    top: 50px;
+    background-color: #F5C518;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+}
+
+.cinemaClass h1 {
+    color: white;
+}
+
+.cinemaClass button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    border: none;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+.cinemaClass form {
+    margin-top: 60px;
+}
+
+.cinemaClass label {
+    color: white;
+}
+
+.cinemaClass input[type="text"] {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.cinemaClass input[type="submit"] {
+    padding: 10px;
+    border: 1px solid white;
+    color: #F5C518;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
 
 /*Edit*/
 

@@ -106,6 +106,10 @@
                                             if (widgets[i].widgetRole == "getPlayerInformation") {
                                                 createSteamWidgetUserInformation(widgets[i].widgetContent)
                                             }
+                                        } else if (widgets[i].widgetName == "cinema") {
+                                            if (widgets[i].widgetRole == "getMovieInformation") {
+                                                createCinemaWidgetMovieInformation(widgets[i].widgetContent)
+                                            }
                                         }
                                     }
                                 }
@@ -376,11 +380,9 @@
                     .then(resp => resp.json())
                     .then (data => {
                         var playerInformations = data.response.players[0]
-                        console.log(playerInformations)
                         var first = '<img style="border: 1px solid black; border-radius: 80px" src="' + playerInformations.avatarfull + '">'
                         var second = '<h2 style="color: white; margin-top: 10px"><strong>' + playerInformations.personaname + '</strong></h2>'
                         var third = '<a target="_blank" style="color: white" href="' + playerInformations.profileurl + '">See Profile</a>'
-                        console.log(first)
                         /*Create Widget*/
                         this.grid = $('.grid-stack').data('gridstack')
                         var node = {
@@ -393,6 +395,63 @@
                         var valueID = 'value="' + playerId + '"'
                         var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
                         var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: black; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-steam"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + third + '</div></div>'
+                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                    })
+                }
+            </script>
+            <!--Cinema Section-->
+            <!--#F5C518-->
+            <div class="hiddenClass">
+                <div class="cinemaClass" id="cinemaClass">
+                    <h1><strong><i class="fas fa-film"></i> Cinema Widget</strong></h1>
+                    <button id="removeWindowCinemaButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="">Get movie information by name -> </label>
+                        <input type="hidden" name="widgetName" value="cinema">
+                        <input type="hidden" name="widgetRole" value="getMovieInformation">
+                        <input type="text" placeholder="Ex : Joker" name="widgetContent" id="videoId" required>
+                        <input type="submit" value="Create">
+                    </form>
+                </div>
+            </div>
+            <!--Close Window Function-->
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#cinemaButton').on('click', function() {
+                        $('#cinemaClass').show()
+                        $('#mainContent').fadeTo("slow", 0.4)
+                    })
+                    $('#removeWindowCinemaButton').on('click', function() {
+                        $('#cinemaClass').hide()
+                        $('#mainContent').fadeTo("slow", 1)
+                    })
+                })
+            </script>
+            <script type="text/javascript">
+                function createCinemaWidgetMovieInformation(movieName) {
+                    var apiKey = "8943a8d22d6a57cbd56344247b60640c"
+                    var url = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + movieName
+                    fetch(url)
+                    .then(resp => resp.json())
+                    .then (data => {
+                        var movieInformation = data.results[0]
+                        var title = movieInformation.original_title
+                        var note = movieInformation.vote_average
+                        var img = '<img src="http://image.tmdb.org/t/p/w300/' + movieInformation.poster_path + '">'
+                        var first = '<h2>' + title + '</h2>'
+                        var second = '<h3 style="margin-top: 10px"><strong><i class="fas fa-star"></i> ' + note + '</strong></h3>'
+                        /*Create Widget*/
+                        this.grid = $('.grid-stack').data('gridstack')
+                        var node = {
+                            x: 3,
+                            y: 3,
+                            width: 4,
+                            height: 6,
+                        }
+                        var elementId = 'id="' + movieName + '"'
+                        var valueID = 'value="' + movieName + '"'
+                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
+                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: #F5C518; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fas fa-film"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + img + second + '</div></div>'
                         this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
                     })
                 }
