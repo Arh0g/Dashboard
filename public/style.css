@@ -305,6 +305,57 @@ ul ul a {
     margin-left: 10px;
 }
 
+/*AdultClass*/
+
+.adultClass {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 300px;
+    top: 50px;
+    background-color: pink;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+}
+
+.adultClass h1 {
+    color: white;
+}
+
+.adultClass button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    border: none;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+
+.adultClass form {
+    margin-top: 60px;
+}
+
+.adultClass label {
+    color: white;
+}
+
+.adultClass input[type="text"] {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.adultClass input[type="submit"] {
+    padding: 10px;
+    border: 1px solid white;
+    color: pink;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
 
 /*Edit*/
 

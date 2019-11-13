@@ -50,6 +50,10 @@
                 <li>
                     <a href="#" id="cinemaButton"><i class="fas fa-film"></i> Get Movie</a>
                 </li>
+                <!-- Adult Content-->
+                <li>
+                    <a href="#" id="adultButton"><i class="fas fa-dog"></i> Get Adult Content</a>
+                </li>
             </ul>
             <ul class="list-unstyled components">
                 <li>
@@ -109,6 +113,10 @@
                                         } else if (widgets[i].widgetName == "cinema") {
                                             if (widgets[i].widgetRole == "getMovieInformation") {
                                                 createCinemaWidgetMovieInformation(widgets[i].widgetContent)
+                                            }
+                                        } else if (widgets[i].widgetName == "adultContent") {
+                                            if (widgets[i].widgetRole == "getRandomMovie") {
+                                                createAdultWidgetRandomMovie(widgets[i].widgetContent)
                                             }
                                         }
                                     }
@@ -452,6 +460,68 @@
                         var valueID = 'value="' + movieName + '"'
                         var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
                         var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: #F5C518; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fas fa-film"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + img + second + '</div></div>'
+                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
+                    })
+                }
+            </script>
+            <!--Adult Content Section-->
+            <!--#F5C518-->
+            <div class="hiddenClass">
+                <div class="adultClass" id="adultClass">
+                    <h1><strong><i class="fas fa-dog"></i> Adult Content Widget</strong></h1>
+                    <button id="removeWindowAdultButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="">Get random video by name -> </label>
+                        <input type="hidden" name="widgetName" value="adultContent">
+                        <input type="hidden" name="widgetRole" value="getRandomMovie">
+                        <input type="text" placeholder="Ex : ***" name="widgetContent" id="videoId" required>
+                        <input type="submit" value="Create">
+                    </form>
+                </div>
+            </div>
+            <!--Close Window Function-->
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#adultButton').on('click', function() {
+                        if (confirm('Are you 18 ?') == true) {
+                            $('#adultClass').show()
+                            $('#mainContent').fadeTo("slow", 0.4)
+                        }
+                    })
+                    $('#removeWindowAdultButton').on('click', function() {
+                        $('#adultClass').hide()
+                        $('#mainContent').fadeTo("slow", 1)
+                    })
+                })
+            </script>
+            <script type="text/javascript">
+                function getRandomInt(max) {
+                    return Math.floor(Math.random() * Math.floor(max));
+                }
+                function createAdultWidgetRandomMovie(movieName) {
+                    var url = 'https://cors-anywhere.herokuapp.com/https://api.redtube.com/?data=redtube.Videos.searchVideos&output=json&search=' + movieName + '&thumbsize=small'
+                    fetch(url)
+                    .then(resp => resp.json())
+                    .then (data => {
+                        /*Get Data*/
+                        var total = data.videos.length
+                        var randomIdMovie = getRandomInt(total)
+                        var movie = data.videos[randomIdMovie]
+                        var movieUrl = movie.video.embed_url
+                        var first = '<h1><strong>' + movie.video.title + '</strong></h1>'
+                        var video = '<iframe style="border: 1px solid pink; border-radius: 5px;" src="' + movieUrl + '"></iframe>'
+                        /*Create Widget*/
+                        this.grid = $('.grid-stack').data('gridstack')
+                        var node = {
+                            x: 3,
+                            y: 3,
+                            width: 4,
+                            height: 3,
+                        }
+                        var elementId = 'id="' + movieName + '"'
+                        var valueID = 'value="' + movieName + '"'
+                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
+                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: pink; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fas fa-dog"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + video + '</div></div>'
                         this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
                     })
                 }
