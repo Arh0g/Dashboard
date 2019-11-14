@@ -1,5 +1,5 @@
 # Dashboard
-Dashboard Epitech Project
+The purpose of this project is to implement a web application that works like Netvibes.
 
 ## Services List
 
