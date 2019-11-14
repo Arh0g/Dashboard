@@ -86,7 +86,13 @@ router.post('/editWidget', (req, res) => {
 })
 
 router.get('/loadWidget', (req, res) => {
-    var widgets = req.user.local.widgets
+    var user = req.user
+    var realUser
+    if (req.user.local)
+        realUser = req.user.local
+    else if (req.user.facebook)
+        realUser = req.user.facebook
+    var widgets = realUser.widgets
     res.send(JSON.stringify(widgets))
 })
 
