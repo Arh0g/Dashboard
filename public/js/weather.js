@@ -28,7 +28,7 @@ function createWeatherWidget(cityWeather) {
         var desc = data.weather[0].description
         var reloadId = 'h2' + cityWeather
         var first = '<h1>' + '<strong>' + city + ', ' + country + '</strong>' + '</h1>'
-        var second = '<h2 id="' + reloadId + '><i class="fas fa-thermometer-half"></i> ' + temp + ' °, ' + desc +'</h2>'
+        var second = '<h2 id="' + reloadId + '"><i class="fas fa-thermometer-half"></i> ' + temp + ' °, ' + desc +'</h2>'
         /*Create Widget*/
         this.grid = $('.grid-stack').data('gridstack')
         var node = {
