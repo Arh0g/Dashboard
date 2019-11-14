@@ -15,11 +15,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/7823975bd6.js" crossorigin="anonymous"></script>   
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!--Include JS files-->
+    <script type="text/javascript" src="js/youtube.js"></script>
+    <script type="text/javascript" src="js/weather.js"></script>
+    <script type="text/javascript" src="js/widgets.js"></script>
+    <script type="text/javascript" src="js/steam.js"></script>
+    <script type="text/javascript" src="js/cinema.js"></script>
+    <script type="text/javascript" src="js/adultcontent.js"></script>
     <title>Dashboard</title>
 </head>
 <body>
     <div class="wrapper">
-
         <!-- Sidebar -->
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -83,51 +89,10 @@
                 </script>
                 <!-- Real Content -->
                 <div class="grid-stack">
-                    <script>
-                        //Load Widgets
-                        function loadAllWidgets() {
-                            var xhr = new XMLHttpRequest()
-                            xhr.open("GET", "/loadWidget", true)
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState == 4 && xhr.status == 200) {
-                                    var widgets = JSON.parse(xhr.responseText)
-                                    for (var i = 0; i < widgets.length; i++) {
-                                        //Youtube Widget Creation
-                                        if (widgets[i].widgetName == "youtube") {
-                                            if (widgets[i].widgetRole == "loadVideo") {
-                                                createYoutubeWidget(widgets[i].widgetContent)
-                                            } else if (widgets[i].widgetRole == "getVideoViews") {
-                                                createYoutubeWidgetForView(widgets[i].widgetContent)
-                                            } else if (widgets[i].widgetRole == "getVideoLikesDislikes") {
-                                                createYoutubeWidgetForLikesDislikes(widgets[i].widgetContent)
-                                            }
-                                        //Weather Widget Creation
-                                        } else if (widgets[i].widgetName == "weather") {
-                                            if (widgets[i].widgetRole == "getWeatherByCity") {
-                                                createWeatherWidget(widgets[i].widgetContent)
-                                            }
-                                        } else if (widgets[i].widgetName == "steam") {
-                                            if (widgets[i].widgetRole == "getPlayerInformation") {
-                                                createSteamWidgetUserInformation(widgets[i].widgetContent)
-                                            }
-                                        } else if (widgets[i].widgetName == "cinema") {
-                                            if (widgets[i].widgetRole == "getMovieInformation") {
-                                                createCinemaWidgetMovieInformation(widgets[i].widgetContent)
-                                            }
-                                        } else if (widgets[i].widgetName == "adultContent") {
-                                            if (widgets[i].widgetRole == "getRandomMovie") {
-                                                createAdultWidgetRandomMovie(widgets[i].widgetContent)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            xhr.send()
-                        }
+                    <script type="text/javascript">
                         loadAllWidgets()
                     </script>
                 </div>
-
                 <script type="text/javascript">
                     $(function () {
                         var options = {
@@ -152,6 +117,7 @@
                     <input type="submit">
                 </form>
             </div>
+
             <script>
                 //Launch Edit Window
                 function editWidget(item) {
@@ -194,58 +160,9 @@
                             })
                         })
                     </script>
-                    <!--Weather Widget Creation-->
-                    <script type="text/javascript">
-                        function reloadWeatherWidget(cityWeather) {
-                            /*Get Data*/
-                            var key = '48eb9b6228b51e3445b97cb1640729a1'
-                            var city = cityWeather
-                            fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                var temp =  parseFloat(data.main.temp)-273.15
-                            })
-                        }
-
-                        function createWeatherWidget(cityWeather) {
-                            /*Get Data*/
-                            var key = '48eb9b6228b51e3445b97cb1640729a1'
-                            var city = cityWeather
-                            fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                var country = data.sys.country
-                                var temp =  Math.round(parseFloat(data.main.temp)-273.15);
-                                var desc = data.weather[0].description
-                                var first = '<h1>' + '<strong>' + city + ', ' + country + '</strong>' + '</h1>'
-                                var second = '<h2><i class="fas fa-thermometer-half"></i> ' + temp + ' °, ' + desc +'</h2>'
-                                /*Create Widget*/
-                                this.grid = $('.grid-stack').data('gridstack')
-                                var node = {
-                                    x: 3,
-                                    y: 3,
-                                    width: 4,
-                                    height: 2
-                                }
-                                var elementId = 'id="' + cityWeather + '"'
-                                var valueID = 'value="' + cityWeather + '"'
-                                var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button class="trashButton" type="submit"></button></form>'
-                                var createElement = '<div onload="reloadWeatherWidget()" class="grid-stack-item" ' + elementId + ' style="background-color: powderblue; margin: 10px; border-radius: 10px;" ><i style="position: absolute; top: 3px; right: 4px" class="fas fa-cloud-sun"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
-                                this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
-                                //Reload Widget Instance
-                                reload = setInterval(function() { reloadWeatherWidget(cityWeather) }, 2000)
-                                })
-                            .catch(function() {
-                                return false
-                            })
-                        }
-                    </script>
                 </div>
             </div>
+
             <!--Youtube Division-->
             <div class="hiddenClass">
                 <div class="youtubeClass" id="youtubeClass">
@@ -285,129 +202,9 @@
                             })
                         })
                     </script>
-                    <!--Weather Widget Creation-->
-                    <script type="text/javascript">
-                        function createYoutubeWidget(videoId) {
-                            /*Get Data*/
-                            var first = '<h1><strong>' + videoId + '</strong></h1>'
-                            var iframe = '<iframe style="margin-bottom: 10px; border: 1px solid red; border-radius: 5px" width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '"></iframe>'
-                            /*Create Widget*/
-                            this.grid = $('.grid-stack').data('gridstack')
-                            var node = {
-                                x: 3,
-                                y: 3,
-                                width: 5,
-                                height: 4,
-                            }
-                            var elementId = 'id="' + videoId + '"'
-                            var valueID = 'value="' + videoId + '"'
-                            var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                            var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-youtube"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + iframe + '</div></div>'
-                            this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
-                        }
-                        //Reload Video Views
-                        function reloadYoutubeWidgetForView(videoId, reloadId) {
-                            var apiKey = 'AIzaSyDbB8TFiUCVdenG1rk8ObLdBQFkTIMwtBw'
-                            var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + videoId + "&key=" + apiKey
-                            fetch(url)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                var statistics = data.items[0].statistics
-                                var toChange = document.getElementById(reloadId)
-                                toChange.innerHTML = '<i class="fas fa-eye"></i> ' + statistics.viewCount
-                            })
-                        }
-                        //Get Video Views
-                        function createYoutubeWidgetForView(videoId) {
-                            var apiKey = 'AIzaSyDbB8TFiUCVdenG1rk8ObLdBQFkTIMwtBw'
-                            var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + videoId + "&key=" + apiKey
-                            fetch(url)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                /*Get Data*/
-                                var elementId = 'id="' + videoId + '"'
-                                var reloadId = 'h2' + videoId + ''
-                                var statistics = data.items[0].statistics
-                                var first = '<h1><strong>' + videoId + '</strong></h1>'
-                                var second = '<h2 id="' + reloadId + '"><i class="fas fa-eye"></i> ' + statistics.viewCount + '</h2>'
-                                /*Create Widget*/
-                                this.grid = $('.grid-stack').data('gridstack')
-                                var node = {
-                                    x: 3,
-                                    y: 3,
-                                    width: 4,
-                                    height: 2,
-                                }
-                                var valueID = 'value="' + videoId + '"'
-                                var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                                var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-youtube"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + '</div></div>'
-                                this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
-                                //Reload Widget Instance
-                                reload = setInterval(function() { reloadYoutubeWidgetForView(videoId, reloadId) }, 10000)
-                            })
-                        }
-                        //Reload Video Likes & Dislikes
-                        function reloadYoutubeWidgetForLikesDislikes(videoId, reloadIdOne, reloadIdTwo) {
-                            var apiKey = 'AIzaSyDbB8TFiUCVdenG1rk8ObLdBQFkTIMwtBw'
-                            var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + videoId + "&key=" + apiKey
-                            fetch(url)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                /*Get Data*/
-                                var statistics = data.items[0].statistics
-                                var likes = statistics.likeCount
-                                var dislikes = statistics.dislikeCount
-                                var idOne = document.getElementById(reloadIdOne)
-                                var idTwo = document.getElementById(reloadIdTwo)
-                                idOne.innerHTML = '<i class="fas fa-thumbs-up"></i> ' + likes
-                                idTwo.innerHTML = '<i class="fas fa-thumbs-down"></i> ' + dislikes
-                            })
-                        }
-                        //Get Video Likes & Dislikes
-                        function createYoutubeWidgetForLikesDislikes(videoId) {
-                            var apiKey = 'AIzaSyDbB8TFiUCVdenG1rk8ObLdBQFkTIMwtBw'
-                            var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + videoId + "&key=" + apiKey
-                            fetch(url)
-                            .then(function(resp) {
-                                return resp.json()
-                            })
-                            .then(function(data) {
-                                /*Get Data*/
-                                var statistics = data.items[0].statistics
-                                var likes = statistics.likeCount
-                                var dislikes = statistics.dislikeCount
-                                var reloadIdOne = 'h2Likes' + videoId
-                                var reloadIdTwo = 'h2dislikes' + videoId
-                                //
-                                var first = '<h1><strong>' + videoId + '</strong></h1>'
-                                var second = '<h2 id="' + reloadIdOne + '"><i class="fas fa-thumbs-up"></i> ' + likes + '</h2>'
-                                var secondBis = '<h2 id="' + reloadIdTwo + '"><i class="fas fa-thumbs-down"></i> ' + dislikes + '</h2>'
-                                /*Create Widget*/
-                                this.grid = $('.grid-stack').data('gridstack')
-                                var node = {
-                                    x: 3,
-                                    y: 3,
-                                    width: 4,
-                                    height: 2,
-                                }
-                                var elementId = 'id="' + videoId + '"'
-                                var valueID = 'value="' + videoId + '"'
-                                var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                                var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: red; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-youtube"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + secondBis + '</div></div>'
-                                this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height, node.name)
-                                //Reload Widget Instance
-                                reload = setInterval(function() { reloadYoutubeWidgetForLikesDislikes(videoId, reloadIdOne, reloadIdTwo) }, 10000)
-                            })
-                        }
-                    </script>
                 </div>
             </div>
+
             <!--Steam Division-->
             <div class="hiddenClass">
                 <div class="steamClass" id="steamClass">
@@ -435,36 +232,8 @@
                     })
                 })
             </script>
-            <script type="text/javascript">
-                function createSteamWidgetUserInformation(playerId) {
-                    //76561198411894760
-                    var apiKey = "F1E6CC6FAACA332C636766584B04B57F"
-                    var url = "https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + apiKey + "&steamids=" + playerId
-                    fetch(url)
-                    .then(resp => resp.json())
-                    .then (data => {
-                        var playerInformations = data.response.players[0]
-                        var first = '<img style="border: 1px solid black; border-radius: 80px" src="' + playerInformations.avatarfull + '">'
-                        var second = '<h2 style="color: white; margin-top: 10px"><strong>' + playerInformations.personaname + '</strong></h2>'
-                        var third = '<a target="_blank" style="color: white" href="' + playerInformations.profileurl + '">See Profile</a>'
-                        /*Create Widget*/
-                        this.grid = $('.grid-stack').data('gridstack')
-                        var node = {
-                            x: 3,
-                            y: 3,
-                            width: 4,
-                            height: 4,
-                        }
-                        var elementId = 'id="' + playerId + '"'
-                        var valueID = 'value="' + playerId + '"'
-                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: black; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fab fa-steam"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + second + third + '</div></div>'
-                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
-                    })
-                }
-            </script>
-            <!--Cinema Section-->
-            <!--#F5C518-->
+
+            <!--Cinema Division-->
             <div class="hiddenClass">
                 <div class="cinemaClass" id="cinemaClass">
                     <h1><strong><i class="fas fa-film"></i> Cinema Widget</strong></h1>
@@ -491,39 +260,8 @@
                     })
                 })
             </script>
-            <script type="text/javascript">
-                function createCinemaWidgetMovieInformation(movieName) {
-                    var apiKey = "8943a8d22d6a57cbd56344247b60640c"
-                    var url = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + movieName
-                    fetch(url)
-                    .then(resp => resp.json())
-                    .then (data => {
-                        var movieInformation = data.results[0]
-                        var title = movieInformation.original_title
-                        var note = movieInformation.vote_average
-                        var img = '<img style="border: 1px solid transparent; border-radius: 5px" src="http://image.tmdb.org/t/p/w300/' + movieInformation.poster_path + '">'
-                        var first = '<h2>' + title + '</h2>'
-                        var second = '<h3 style="margin-top: 10px"><strong><i class="fas fa-star"></i> ' + note + '</strong></h3>'
-                        var secondBis = '<h3><strong><i class="fas fa-clock"></i> ' + movieInformation.release_date + '</strong></i></h3>'
-                        var secondBisBis = '<h3><strong><i class="fas fa-users"></i> ' + movieInformation.popularity + '</strong></i></h3>'
-                        /*Create Widget*/
-                        this.grid = $('.grid-stack').data('gridstack')
-                        var node = {
-                            x: 3,
-                            y: 3,
-                            width: 4,
-                            height: 7,
-                        }
-                        var elementId = 'id="' + movieName + '"'
-                        var valueID = 'value="' + movieName + '"'
-                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: #F5C518; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fas fa-film"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + img + second + secondBis + secondBisBis + '</div></div>'
-                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
-                    })
-                }
-            </script>
+
             <!--Adult Content Section-->
-            <!--#F5C518-->
             <div class="hiddenClass">
                 <div class="adultClass" id="adultClass">
                     <h1><strong><i class="fas fa-dog"></i> Adult Content Widget</strong></h1>
@@ -551,38 +289,6 @@
                         $('#mainContent').fadeTo("slow", 1)
                     })
                 })
-            </script>
-            <script type="text/javascript">
-                function getRandomInt(max) {
-                    return Math.floor(Math.random() * Math.floor(max));
-                }
-                function createAdultWidgetRandomMovie(movieName) {
-                    var url = 'https://cors-anywhere.herokuapp.com/https://api.redtube.com/?data=redtube.Videos.searchVideos&output=json&search=' + movieName + '&thumbsize=medium'
-                    fetch(url)
-                    .then(resp => resp.json())
-                    .then (data => {
-                        /*Get Data*/
-                        var total = data.videos.length
-                        var randomIdMovie = getRandomInt(total)
-                        var movie = data.videos[randomIdMovie]
-                        var movieUrl = movie.video.embed_url
-                        var first = '<h1><strong>' + movie.video.title + '</strong></h1>'
-                        var video = '<iframe style="border: 1px solid pink; border-radius: 5px;" src="' + movieUrl + '"></iframe>'
-                        /*Create Widget*/
-                        this.grid = $('.grid-stack').data('gridstack')
-                        var node = {
-                            x: 3,
-                            y: 3,
-                            width: 4,
-                            height: 3,
-                        }
-                        var elementId = 'id="' + movieName + '"'
-                        var valueID = 'value="' + movieName + '"'
-                        var button = '<form action="/deleteWidget" method="POST"><input type="hidden" name="toRemove" ' + valueID + '></input><button type="submit" class="trashButton"></button></form>'
-                        var createElement = '<div class="grid-stack-item" ' + elementId + ' style="background-color: pink; margin: 10px; border-radius: 10px;"><i style="position:absolute; top:3px; right: 4px" class="fas fa-dog"></i><button id="editButton" class="editButton" onclick="editWidget(this.parentNode.id)"></button><div class="grid-stack-item-content" style="padding: 20px; text-align: center">' + button + first + video + '</div></div>'
-                        this.grid.addWidget($(createElement), node.x, node.y, node.width, node.height)
-                    })
-                }
             </script>
         </div>
     </div>
