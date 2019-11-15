@@ -22,3 +22,6 @@ This widget allow you to see the rating of a movie, his popularity, his poster a
 
 ### Adult Content
 This widget allow you to watch adult content video thanks to a video name.
+
+### Joke
+This widget allow you to get a Chuck Norris joke thanks to a word.

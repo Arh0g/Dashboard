@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/steam.js"></script>
     <script type="text/javascript" src="js/cinema.js"></script>
     <script type="text/javascript" src="js/adultcontent.js"></script>
+    <script type="text/javascript" src="js/joke.js"></script>
     <title>Dashboard</title>
 </head>
 <body>
@@ -59,6 +60,9 @@
                 <!-- Adult Content-->
                 <li>
                     <a href="#" id="adultButton"><i class="fas fa-dog"></i> Get Adult Content</a>
+                </li>
+                <li>
+                    <a href="#" id="jokeButton"><i class="fas fa-hat-cowboy-side"></i> Get Joke</a>
                 </li>
             </ul>
             <ul class="list-unstyled components">
@@ -286,6 +290,34 @@
                     })
                     $('#removeWindowAdultButton').on('click', function() {
                         $('#adultClass').hide()
+                        $('#mainContent').fadeTo("slow", 1)
+                    })
+                })
+            </script>
+
+            <!--Joke Content Section -->
+            <div class="hiddenClass">
+                <div class="jokeClass" id="jokeClass">
+                    <h1><strong><i class="fas fa-hat-cowboy-side"></i> Joke Content Widget</strong></h1>
+                    <button id="removeWindowJokeButton">X</button>
+                    <form action="/saveWidget" method="POST">
+                        <label for="">Get random Chuck Norris joke by name -> </label>
+                        <input type="hidden" name="widgetName" value="joke">
+                        <input type="hidden" name="widgetRole" value="getChuckNorrisJoke">
+                        <input type="text" placeholder="Ex : water" name="widgetContent" id="jokeWord" required>
+                        <input type="submit" value="Create">
+                    </form>
+                </div>
+            </div>
+            <!--Close Window Function-->
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#jokeButton').on('click', function() {
+                        $('#jokeClass').show()
+                        $('#mainContent').fadeTo("slow", 0.4)
+                    })
+                    $('#removeWindowJokeButton').on('click', function() {
+                        $('#jokeClass').hide()
                         $('#mainContent').fadeTo("slow", 1)
                     })
                 })

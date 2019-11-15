@@ -32,6 +32,10 @@ function loadAllWidgets() {
                     if (widgets[i].widgetRole == "getRandomMovie") {
                         createAdultWidgetRandomMovie(widgets[i].widgetContent)
                     }
+                } else if (widgets[i].widgetName == "joke") {
+                    if (widgets[i].widgetRole == "getChuckNorrisJoke") {
+                        createJokeWidgetChuckNorris(widgets[i].widgetContent)
+                    }
                 }
             }
         }
