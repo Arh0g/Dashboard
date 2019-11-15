@@ -10,12 +10,100 @@ const bodyParser = require('body-parser')
 let request = require('request')
 var urlencodedParser = bodyParser.urlencoded({extended: false})
 const { ensureAuthenticated } = require('../config/auth')
+var ip = require("ip");
 
 //Passport variable and link it to his config
 const passport = require('passport')
 require('../config/passport')(passport)
 
 router.get('/', (req, res) => res.render('welcome'));
+
+router.get('/about.json', function(req, res) {
+    var time = (new Date).getTime()
+    res.json({
+        "client": {
+            "host": ip.address()
+        },
+        "server": {
+            "current_time": time,
+            "services": [{
+                "name": "weather",
+                "widgets": [{
+                    "name": "weatherWidget",
+                    "description": "Display temperature for a city with small description.",
+                    "params": [{
+                        "name": "cityWeather",
+                        "type": "string"
+                    }]
+                }]
+            }, {
+                "name": "youtube",
+                "widgets": [{
+                    "name": "loadVideo",
+                    "description": "Load video by Id.",
+                    "params": [{
+                        "name": "videoId",
+                        "type": "string"
+                    }]
+                }, {
+                    "name": "getVideoViews",
+                    "description": "Get video views by Id.",
+                    "params": [{
+                        "name": "videoId",
+                        "type": "string"
+                    }]
+                }, {
+                    "name": "getVideoLikesDislikes",
+                    "description": "Get video likes & dislikes by Id.",
+                    "params": [{
+                        "name": "videoId",
+                        "type": "string"
+                    }]
+                }]
+            }, {
+                "name": "steam",
+                "widgets": [{
+                    "name": "getPlayerInformation",
+                    "description": "Get player information by Id.",
+                    "params": [{
+                        "name": "playerId",
+                        "type": "string"
+                    }]
+                }]
+            }, {
+                "name": "cinema",
+                "widgets": [{
+                    "name": "getMovieInformation",
+                    "description": "Get movie information by name.",
+                    "params": [{
+                        "name": "movieName",
+                        "type": "string"
+                    }]
+                }]
+            }, {
+                "name": "adultContent",
+                "widgets": [{
+                    "name": "getRandomMovie",
+                    "description": "Get random movie by name.",
+                    "params": [{
+                        "name": "movieName",
+                        "type": "string"
+                    }]
+                }]
+            }, {
+                "name": "joke",
+                "widgets": [{
+                    "name": "getChuckNorrisJoke",
+                    "description": "Get Chuck Norris joke by word.",
+                    "params": [{
+                        "name": "jokeWord",
+                        "type": "string"
+                    }]
+                }]
+            }]
+        }
+    })
+})
 
 router.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['public_profile', 'email']
