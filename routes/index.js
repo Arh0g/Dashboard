@@ -209,6 +209,7 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
     } else if (req.user.facebook) {
         user = req.user.facebook
     }
+    console.log('lol')
     res.render('profile', {
         user: user
     })
